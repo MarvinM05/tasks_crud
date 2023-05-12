@@ -4,6 +4,10 @@ const db = require('./utils/database')
 
 const Tasks = require('./models/tasks.models')
 
+require('dotenv').config()
+
+const PORT = process.env.PORT || 5000
+
 db.authenticate()
   .then(() => console.log('Base de datos conectada'))
   .catch((err) => console.log(err))
@@ -15,6 +19,14 @@ db.sync()
 const app = express()
 
 app.use(express.json())
+
+app.get('/', async (req, res) => {
+  try {
+    res.json('todo esta en orden')
+  } catch (error) {
+    res.status(400).json(error)
+  }
+})
 
 app.get('/api/v1/todos', async (req, res) => {
   try {
@@ -81,8 +93,8 @@ app.put('/api/v1/todos/:id', async (req, res) => {
   }
 })
 
-app.listen(5000, () => {
-  console.log('Servidor escuchando en puerto 5000')
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en puerto ${PORT}`);
 })
 
 
